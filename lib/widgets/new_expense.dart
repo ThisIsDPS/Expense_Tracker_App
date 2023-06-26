@@ -1,8 +1,8 @@
 import 'dart:io';
+import 'package:expense_tracker_3/main.dart';
 import 'package:expense_tracker_3/models/expense.dart';
 import 'package:expense_tracker_3/widgets/form/amount_input.dart';
 import 'package:expense_tracker_3/widgets/form/date_input.dart';
-import 'package:expense_tracker_3/widgets/form/dropdown_input.dart';
 import 'package:expense_tracker_3/widgets/form/title_input.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +20,7 @@ class _NewExpenseState extends State<NewExpense> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
   DateTime? _selectedDate;
-  final Category _selectedCategory = Category.leisure;
+  Category _selectedCategory = Category.leisure;
 
   @override
   void dispose() {
@@ -133,7 +133,28 @@ class _NewExpenseState extends State<NewExpense> {
                   if (width >= 600)
                     Row(
                       children: [
-                        DropDownInput(selectedCategory: _selectedCategory),
+                        DropdownButton(
+                          value: _selectedCategory,
+                          style: TextStyle(
+                            color: kColorScheme.primary,
+                          ),
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name.toUpperCase(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                        ),
                         const Spacer(),
                         DateInput(
                             selectedDate: _selectedDate,
@@ -160,7 +181,28 @@ class _NewExpenseState extends State<NewExpense> {
                   Row(
                     children: [
                       if (width < 600)
-                        DropDownInput(selectedCategory: _selectedCategory),
+                        DropdownButton(
+                          value: _selectedCategory,
+                          style: TextStyle(
+                            color: kColorScheme.primary,
+                          ),
+                          items: Category.values
+                              .map(
+                                (category) => DropdownMenuItem(
+                                  value: category,
+                                  child: Text(
+                                    category.name.toUpperCase(),
+                                  ),
+                                ),
+                              )
+                              .toList(),
+                          onChanged: (value) {
+                            if (value == null) return;
+                            setState(() {
+                              _selectedCategory = value;
+                            });
+                          },
+                        ),
                       const Spacer(),
                       TextButton(
                         onPressed: () {
